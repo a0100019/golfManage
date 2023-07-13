@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "527012203413",
+    "project_id": "golf-db91d",
+    "storage_bucket": "golf-db91d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527012203413:android:76e7b2d278418abedec49c",
+        "android_client_info": {
+          "package_name": "com.example.golf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527012203413-ha57rsi2uq68f1q73eksl59te6oe4op9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpiwcbxrYZRhFIFld9j8k-UMrDPY7Z7Fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527012203413-ha57rsi2uq68f1q73eksl59te6oe4op9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

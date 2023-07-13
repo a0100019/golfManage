@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/mainTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="출석 이벤트"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/assistanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전화번호를 입력해주세요."
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@id/mainTextView" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/keyPadFlow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/assistanceTextView">
+
+        <TextView
+            android:id="@+id/numberTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="010-"
+            android:textSize="50sp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/numberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="                   "
+            android:maxLength="9"
+            android:textSize="50sp"
+            app:layout_constraintStart_toEndOf="@+id/numberTextView2"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="         -         "
+            android:textSize="50sp"
+            app:layout_constraintStart_toEndOf="@id/numberTextView2"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/keyPadFlow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        app:constraint_referenced_ids="button1, button2, button3, button4, button5, button6, button7, button8, button9,buttonMinus, button0,buttonEnter"
+        app:flow_horizontalGap="8dp"
+        app:flow_maxElementsWrap="3"
+        app:flow_verticalGap="8dp"
+        app:flow_wrapMode="chain"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1" />
+
+    <Button
+        android:id="@+id/button1"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="1"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button2"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="2"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button3"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="3"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button4"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="4"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button5"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="5"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button6"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="6"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button7"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="7"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button8"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="8"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button9"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="9"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/buttonMinus"
+        style="@style/operatorKeypad"
+        android:onClick="minusClicked"
+        android:text="지우기"
+        android:textSize="25sp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button0"
+        style="@style/numberKeypad"
+        android:onClick="numberClicked"
+        android:text="0"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/buttonEnter"
+        style="@style/operatorKeypad"
+        android:onClick="inClicked"
+        android:text="확인"
+        android:textSize="25sp"
+        tools:ignore="MissingConstraints" />
+
+
+    <ImageView
+        android:id="@+id/guideline1"
+        android:layout_width="5dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="전체 순위"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/rankingFlow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="rank1, rank1Name, rank1Times, rank1Grade, rank2, rank2Name, rank2Times, rank2Grade, rank3, rank3Name, rank3Times, rank3Grade, rank4, rank4Name, rank4Times, rank4Grade, rank5, rank5Name, rank5Times, rank5Grade "
+        app:flow_horizontalGap="10dp"
+        android:layout_marginTop="30dp"
+        app:flow_maxElementsWrap="4"
+        app:flow_verticalGap="5dp"
+        app:flow_wrapMode="chain"
+        app:layout_constraintEnd_toStartOf="@+id/guideline1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/rank1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1등"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/rank1Name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="3696"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/rank1Times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15회"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/rank1Grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:src="@drawable/baseline_pets_24_1_2"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="46dp" />
+
+    <TextView
+        android:id="@+id/rank2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2등"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="245dp" />
+
+    <TextView
+        android:id="@+id/rank2Name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="안녕하세요ㄴㄴㄴㄴㄴ"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/rank2Times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15회"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/rank2Grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:src="@drawable/baseline_diamond_24_9_2"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="46dp" />
+
+    <TextView
+        android:id="@+id/rank3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3등"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/rank3Name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="골프천재"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/rank3Times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12회"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/rank3Grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:src="@drawable/baseline_cruelty_free_24_2_3"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="46dp" />
+
+    <TextView
+        android:id="@+id/rank4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4등"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/rank4Name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="골프왕11"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/rank4Times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10회"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/rank4Grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:src="@drawable/baseline_attractions_24_10_1"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="46dp" />
+
+    <TextView
+        android:id="@+id/rank5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5등"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/rank5Name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="골프왕11"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/rank5Times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="07회"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/rank5Grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:src="@drawable/baseline_military_tech_24_13_1"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="46dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_menu" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
