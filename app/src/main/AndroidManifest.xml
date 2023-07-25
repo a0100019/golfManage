@@ -19,6 +19,9 @@
             android:name=".MemberActivity"
             android:exported="false" />
         <activity
+            android:name=".MemberActivity2"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

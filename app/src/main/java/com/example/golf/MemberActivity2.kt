@@ -10,30 +10,25 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.golf.databinding.ActivityMemberBinding
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import kotlin.time.Duration
 
 @Suppress("DEPRECATION")
-class MemberActivity : AppCompatActivity() {
+class MemberActivity2 : AppCompatActivity() {
     private lateinit var binding: ActivityMemberBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMemberBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val receivedIntent = intent
-        val number = receivedIntent.getStringExtra("number")
-        binding.numberTextView.text = number.toString()
-        val totalAttendance = receivedIntent.getIntExtra("totalAttendance", 0)
 
         //fragment
         val fragment = MonthRank()
@@ -55,18 +50,12 @@ class MemberActivity : AppCompatActivity() {
                     true
                 }
                 else -> {
-                    val gradeTable = GradeTable().apply {
-                        arguments = Bundle().apply {
-                            // 전달할 값 설정
-                            putInt("totalAttendance", totalAttendance)
-                        }
-                    }
+                    val gradeTable = GradeTable()
                     switchFragment(gradeTable)
                     true
                 }
             }
         }
-
 
         //상태바 없애기
         window.setFlags(
@@ -80,15 +69,18 @@ class MemberActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = newUiOptions
 
 
+        val receivedIntent = intent
+        val number = receivedIntent.getStringExtra("number")
+        binding.numberTextView.text = number.toString()
+
+        
         //츨석 횟수 적용
         val firstDocRef = Firebase.firestore.collection("number").document(number.toString())
         firstDocRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
                     val currentMonthAttendance = documentSnapshot.getLong("monthAttendance") ?: 0
-                    val updatedMonthAttendance = currentMonthAttendance + 1
                     val currentTotalAttendance = documentSnapshot.getLong("totalAttendance") ?: 0
-                    val updatedTotalAttendance = currentTotalAttendance + 1
                     val currentGrade = documentSnapshot.getLong("grade") ?: 0
 
                     val currentName = documentSnapshot.getString("name") ?:""
@@ -98,107 +90,27 @@ class MemberActivity : AppCompatActivity() {
                     binding.coffeeCountTextView.text = coffee.toString()
                     binding.gameCountTextView.text = game.toString()
 
-
-                    //등급 모양 부여
-                    gradeInsert(updatedTotalAttendance)
-
-                    // 출석 시간 입력
-                    val currentDateTime = LocalDateTime.now()
-                    val formatter = DateTimeFormatter.ofPattern("MM/dd HH시 mm분")
-                    val firstTime = currentDateTime.format(formatter)
-                    binding.frstTime.text = firstTime.toString()
-                    val timestamp = Timestamp(currentDateTime.toEpochSecond(ZoneOffset.UTC), currentDateTime.nano)
-
-                    //출석 횟수 입력
-                    val updates = hashMapOf<String, Any>(
-                        "monthAttendance" to updatedMonthAttendance,
-                        "totalAttendance" to updatedTotalAttendance,
-                        "firstTime" to timestamp
-                    )
-                    firstDocRef.update(updates)
-                        .addOnSuccessListener {
-                            Log.d("aaaa", "Coffee field updated successfully.")
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.w("aaaa", "Error updating coffee field", exception)
-                        }
-
-                    binding.monthAttendanceTextView.text = updatedMonthAttendance.toString()
-                    binding.totalAttendanceTextView.text = updatedTotalAttendance.toString()
-                } else {
-                    Log.d("aaaa", "Document does not exist.")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("aaaa", "Error getting document", exception)
-            }
-
-        // 전체 순위 업데이트 하는 코드
-        val totalQuery = Firebase.firestore.collection("number").orderBy("totalAttendance", Query.Direction.DESCENDING)
-
-        totalQuery.get()
-            .addOnSuccessListener { querySnapshot ->
-                var totalRank = 1
-                for (document in querySnapshot.documents) {
-                    val documentRef = Firebase.firestore.collection("number").document(document.id)
-                    val updates = hashMapOf<String, Any>("totalRank" to totalRank)
-
-                    documentRef.update(updates)
-                        .addOnSuccessListener {
-                            // 성공적으로 rank 필드를 업데이트한 경우
-                            Log.d("aaaa", "Document ${document.id} rank updated successfully.")
-                        }
-                        .addOnFailureListener { exception ->
-                            // rank 필드 업데이트 실패한 경우
-                            Log.w("aaaa", "Error updating rank for document ${document.id}", exception)
-                        }
-
-                    totalRank++
-                }
-            }
-            .addOnFailureListener { exception ->
-                // 문서 가져오기 실패한 경우
-                Log.w("aaaa", "Error getting documents", exception)
-            }
-
-//월 순위 업데이트 하는 코드
-        val monthQuery = Firebase.firestore.collection("number").orderBy("monthAttendance", Query.Direction.DESCENDING)
-
-        monthQuery.get()
-            .addOnSuccessListener { querySnapshot ->
-                var monthRank = 1
-                for (document in querySnapshot.documents) {
-                    val documentRef = Firebase.firestore.collection("number").document(document.id)
-                    val updates = hashMapOf<String, Any>("monthRank" to monthRank)
-
-                    documentRef.update(updates)
-                        .addOnSuccessListener {
-                            // 성공적으로 rank 필드를 업데이트한 경우
-                            Log.d("aaaa", "Document ${document.id} rank updated successfully.")
-                        }
-                        .addOnFailureListener { exception ->
-                            // rank 필드 업데이트 실패한 경우
-                            Log.w("aaaa", "Error updating rank for document ${document.id}", exception)
-                        }
-
-                    monthRank++
-                }
-            }
-            .addOnFailureListener { exception ->
-                // 문서 가져오기 실패한 경우
-                Log.w("aaaa", "Error getting documents", exception)
-            }
-
-
-        //순위 입력 코드
-        val secondDocRef = Firebase.firestore.collection("number").document(number.toString())
-        secondDocRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
+                    binding.monthAttendanceTextView.text = currentMonthAttendance.toString()
+                    binding.totalAttendanceTextView.text = currentTotalAttendance.toString()
                     val monthRank = documentSnapshot.getLong("monthRank") ?: 0
                     val totalRank = documentSnapshot.getLong("totalRank") ?: 0
                     binding.monthRankingTextView.text = monthRank.toString()
                     binding.totalRankingTextView.text = totalRank.toString()
+
+                    val firstTimestamp = documentSnapshot.getTimestamp("firstTime")
+                    val localFirstDateTime = firstTimestamp?.let { LocalDateTime.ofEpochSecond(it.seconds, firstTimestamp.nanoseconds, ZoneOffset.UTC) }
+                    val formatter = DateTimeFormatter.ofPattern("MM/dd HH시 mm분")
+                    val firstTime = localFirstDateTime?.format(formatter)
+                    binding.frstTime.text = firstTime.toString()
+                    val currentDateTime = LocalDateTime.now()
+                    val minutesDiff = ChronoUnit.MINUTES.between(localFirstDateTime, currentDateTime)
+                    val hours = minutesDiff / 60
+                    val minutes = minutesDiff % 60
+                    binding.timeInterval.text = "$hours 시간 $minutes 분"
+
+                    //등급 모양 부여
+                    gradeInsert(currentTotalAttendance)
+
                 } else {
                     Log.d("aaaa", "Document does not exist.")
                 }
@@ -267,8 +179,8 @@ class MemberActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun gradeInsert(updatedTotalAttendance: Long) {
-        when (updatedTotalAttendance.toInt()) {
+    private fun gradeInsert(currentTotalAttendance: Long) {
+        when (currentTotalAttendance.toInt()) {
             1 -> {
                 binding.gradeImageView.setImageResource(R.drawable.baseline_pets_24_1_3)
             }
@@ -333,7 +245,7 @@ class MemberActivity : AppCompatActivity() {
             }
         }
 
-        when (updatedTotalAttendance.toInt()) {
+        when (currentTotalAttendance.toInt()) {
             46, 47, 48, 49, 50, 51 -> {
                 binding.gradeImageView.setImageResource(R.drawable.baseline_local_florist_24_6_3)
             }

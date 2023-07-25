@@ -1,50 +1,99 @@
 package com.example.golf
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.golf.databinding.ActivityMainBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.lang.StringBuilder
-import kotlin.math.ln
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val number = StringBuilder("")
     private var lastClickTime: Long = 0
     private val MIN_CLICK_INTERVAL = 2000 // 최소 클릭 간격 (1초)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //fragment
+        val fragment = MonthRank()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
+
+        // BottomNavigationView 아이템 선택 시 프래그먼트 전환
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.totalRank -> {
+                    val totalRank = TotalRank()
+                    switchFragment(totalRank)
+                    true
+                }
+                R.id.monthRank -> {
+                    val monthRank = MonthRank()
+                    switchFragment(monthRank)
+                    true
+                }
+                else -> {
+                    val eventFragment = EventFragment()
+                    switchFragment(eventFragment)
+                    true
+                }
+            }
+        }
+
+        //상태바 없애기
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        val uiOptions = window.decorView.systemUiVisibility
+        var newUiOptions = uiOptions
+        newUiOptions = newUiOptions xor View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        newUiOptions = newUiOptions xor View.SYSTEM_UI_FLAG_FULLSCREEN
+        newUiOptions = newUiOptions xor View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        window.decorView.systemUiVisibility = newUiOptions
+
+        //현재 시각
+        val updateIntervalMillis: Long = 10000 // 업데이트 간격 (10초)
+        val handler = Handler()
+        val updateRunnable = object : Runnable {
+            @SuppressLint("SetTextI18n")
+            override fun run() {
+                val currentDateTime = LocalDateTime.now()
+                val minutes = currentDateTime.minute
+                val hours = currentDateTime.hour
+                val formattedMinutes = String.format("%02d", minutes) // 분을 2자리 숫자로 포맷팅
+                val formattedHour = String.format("%02d", hours) // 시를 2자리 숫자로 포맷팅
+                binding.timeTextView.text = formattedHour + "시 " + formattedMinutes + "분"
+                // 일정한 간격으로 Runnable을 다시 실행하여 시간 업데이트 반복
+                handler.postDelayed(this, updateIntervalMillis)
+            }
+        }
+        handler.post(updateRunnable)
 
         //확인 버튼 비활성화
         binding.buttonEnter.isEnabled = false
-//        binding.buttonEnter.setOnClickListener {
-//            if(number.toString() == "77113695") {
-//                val intent = Intent(this, ManagerActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
-//            else if(number.toString() == "45843696") {
-//                val intent = Intent(this, MemberActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
-//            else {
-//
-//            }
-//        }
 
+    }
+//여기까지 oncreate
+
+    private fun switchFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
     }
 
     fun numberClicked(view : View) {
@@ -125,38 +174,50 @@ class MainActivity : AppCompatActivity() {
 
             keyPadFlowEnd()
 
-            //툭정 문서 가져오기
-//        Firebase.firestore.collection("number").document("77113696")
-//            .get()
-//            .addOnSuccessListener { document ->
-//                if (document != null) {
-//                    Log.d("11", "DocumentSnapshot data: ${document.data}")
-//                } else {
-//                    Log.d("11", "No such document")
-//                }
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.d("11", "get failed with ", exception)
-//            }
-
-
-            //문서 검색 쿼리
+            //전화번호 검색 쿼리
             Firebase.firestore.collection("number")
                 .whereEqualTo("number", number.toString())
                 .get()
-                .addOnSuccessListener { documents ->
-                    if (documents != null && !documents.isEmpty) {
+                .addOnSuccessListener { querySnapshot ->
+                    if (querySnapshot != null && !querySnapshot.isEmpty) {
                         // 검색 결과가 존재하는 경우
+                        val documents = querySnapshot.documents
                         for (document in documents) {
-                            Log.d("aaaa", "${document.id} => ${document.data}")
-                        }
-                        Log.d("aaaa", "11")
+                            val firstTimestamp = document.getTimestamp("firstTime")
+                            val totalAttendance = document.getLong("totalAttendance")
 
-                        //유저 정보 Activity 열기
-                        val intent = Intent(this, MemberActivity::class.java)
-                        intent.putExtra("number", number.toString())
-                        startActivity(intent)
-                        finish()
+                            if (firstTimestamp != null) {
+                                val localFirstDateTime = firstTimestamp.let { LocalDateTime.ofEpochSecond(it.seconds, firstTimestamp.nanoseconds, ZoneOffset.UTC) }
+                                val currentDateTime = LocalDateTime.now()
+                                if ((localFirstDateTime?.toLocalDate()
+                                        ?: 0) == currentDateTime.toLocalDate()
+                                ) {
+                                    // 두 LocalDateTime 객체가 같은 날짜인 경우
+                                    val intent = Intent(this, MemberActivity2::class.java)
+                                    intent.putExtra("totalAttendance", totalAttendance?.toInt())
+                                    intent.putExtra("number", number.toString())
+                                    startActivity(intent)
+                                    finish()
+                                    Log.d("aaaa", "같은 날짜")
+
+                                } else {
+                                    // 두 LocalDateTime 객체가 다른 날짜인 경우
+                                    val intent = Intent(this, MemberActivity::class.java)
+                                    intent.putExtra("totalAttendance", totalAttendance?.toInt())
+                                    intent.putExtra("number", number.toString())
+                                    startActivity(intent)
+                                    finish()
+                                    Log.d("aaaa", "다른 날짜")
+
+                                }
+                            } else {
+                                // 필드가 존재하지 않거나 값이 null인 경우 처리
+                            }
+                        }
+
+
+
+
                     } else {
                         // 검색 결과가 없는 경우
                         Log.d("aaaa", "No documents found.")
@@ -193,11 +254,8 @@ class MainActivity : AppCompatActivity() {
                                     .addOnFailureListener { e -> Log.w("aaaa", "문서 만들기 실패", e)
                                         keyPadFlowStart()
                                     }
-
-
                             }
                         }.show()
-
                     }
                 }
                 .addOnFailureListener { exception ->

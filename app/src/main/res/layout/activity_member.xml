@@ -6,6 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".MemberActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:name="com.example.golf.TotalRank"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="현재 시각"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="00시 00분"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView20"
+        app:layout_constraintStart_toStartOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
     <ImageView
         android:id="@+id/guideline1"
         android:layout_width="5dp"
@@ -19,16 +50,7 @@
         app:layout_constraintHorizontal_bias="0.3"
         />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="전체 순위"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -37,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline1"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_menu" />
+        app:menu="@menu/bottom_menu_private" />
 
 
     <TextView
@@ -111,17 +133,6 @@
         app:layout_constraintBottom_toTopOf="@+id/horizontalGuideLine"
         app:layout_constraintEnd_toEndOf="@+id/nameTextView"
         app:layout_constraintStart_toStartOf="@+id/nameTextView" />
-
-    <Button
-        android:id="@+id/gradeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="0dp"
-        android:text="등급표 보기"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideLine"
-        app:layout_constraintEnd_toStartOf="@+id/nameEditButton"
-        app:layout_constraintStart_toEndOf="@+id/verticalGuideLine" />
-
 
     <ImageView
         android:id="@+id/horizontalGuideLine"
@@ -202,7 +213,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:text="이번달 순위"
-        android:textSize="20sp"
+        android:textSize="25sp"
         app:layout_constraintEnd_toStartOf="@+id/monthRankingTextView"
         app:layout_constraintTop_toTopOf="@+id/monthRankingTextView" />
 
@@ -210,10 +221,20 @@
         android:id="@+id/monthRankingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:text="1"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView23"
+        app:layout_constraintEnd_toStartOf="@+id/textView23"
+        app:layout_constraintTop_toTopOf="@+id/textView23" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="등"
+        android:textSize="25sp"
         android:layout_marginEnd="10dp"
-        android:text="1등"
-        android:textSize="20sp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine" />
 
@@ -222,7 +243,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="전체 순위"
-        android:textSize="20sp"
+        android:textSize="25sp"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/totalRankingTextView" />
 
@@ -230,10 +251,20 @@
         android:id="@+id/totalRankingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:text="3"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView40"
+        app:layout_constraintEnd_toStartOf="@+id/textView40"
+        app:layout_constraintTop_toTopOf="@+id/textView40" />
+
+    <TextView
+        android:id="@+id/textView40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:text="3등"
-        android:textSize="20sp"
+        android:text="등"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideLine2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/monthRankingTextView" />
 
@@ -252,11 +283,65 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="출석 이벤트"
+        android:text="오늘의 출석 정보"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine2" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="나중에 다시 확인 가능합니다. 주차 시간에 참고해주세요."
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView11"
+        app:layout_constraintStart_toStartOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@id/textView11" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오늘 출석 시간"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideLine3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@id/horizontalGuideLine2" />
+
+    <TextView
+        android:id="@+id/frstTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="00/00 00시 00분"
+        android:textSize="30sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView16"
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="소요 시간"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideLine3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/timeInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="00시간 00분"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <ImageView
         android:id="@+id/horizontalGuideLine3"
@@ -331,6 +416,7 @@
         app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine3" />
 
     <TextView
+        android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="게임 교환권"
@@ -373,7 +459,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="나가기 (30초)"
+        android:textSize="25sp"
+        android:text="나가기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

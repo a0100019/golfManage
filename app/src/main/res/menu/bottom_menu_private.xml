@@ -14,8 +14,8 @@
 
 
     <item
-        android:id="@+id/event"
-        android:icon="@drawable/baseline_card_giftcard_24"
-        android:title="이벤트" />
+        android:id="@+id/gradeTable"
+        android:icon="@drawable/baseline_signal_cellular_alt_24"
+        android:title="등급표" />
 
 </menu>
