@@ -48,16 +48,6 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintTop_toTopOf="@+id/searchEditText" />
 
-    <Button
-        android:id="@+id/gradeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="순위 보기"
-        app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
-        app:layout_constraintEnd_toStartOf="@+id/textView13"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchEditText" />
-
     <ImageView
         android:id="@+id/horizontalGuideLine"
         android:layout_width="match_parent"
