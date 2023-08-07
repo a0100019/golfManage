@@ -44,11 +44,10 @@
         android:layout_marginStart="10dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="0.3"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/verticalGuideline2"
@@ -56,19 +55,18 @@
         android:layout_height="0dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toEndOf="@+id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine3"
+        app:layout_constraintEnd_toStartOf="@+id/exitButton"
         app:layout_constraintHorizontal_bias="0.5"
-        />
+        app:layout_constraintStart_toEndOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine3" />
 
     <TextView
         android:id="@+id/eventTextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="추가 이벤트"
         android:textSize="25sp"
-        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toStartOf="@+id/verticalGuideline2"
         app:layout_constraintStart_toEndOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine3" />
@@ -77,10 +75,10 @@
         android:id="@+id/eventTextView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="출석 10회마다 커피 교환권을 드립니다!"
-        android:maxEms="7"
-        android:textSize="15sp"
         android:layout_marginTop="5dp"
+        android:maxEms="7"
+        android:text="출석 10회마다 커피 교환권을 드립니다"
+        android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/verticalGuideline2"
         app:layout_constraintStart_toEndOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/eventTextView1" />
@@ -89,8 +87,8 @@
         android:id="@+id/eventTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        android:textSize="30sp"
+        android:text="0/10"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/verticalGuideline2"
         app:layout_constraintStart_toEndOf="@+id/guideline1"
@@ -122,9 +120,9 @@
         android:id="@+id/numberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="0000-0000"
         android:textSize="13sp"
-        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@+id/nameTextView"
         app:layout_constraintStart_toStartOf="@+id/nameTextView"
         app:layout_constraintTop_toBottomOf="@id/nameTextView" />
@@ -275,10 +273,10 @@
         android:id="@+id/textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
         android:text="등"
         android:textSize="25sp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine" />
 
@@ -359,9 +357,9 @@
         android:id="@+id/frstTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:hint="00/00 00시 00분"
         android:textSize="30sp"
-        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@+id/textView16"
         app:layout_constraintStart_toStartOf="@+id/textView16"
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
@@ -370,7 +368,7 @@
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="소요 시간"
+        android:text="골프장에 머무른 시간"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/horizontalGuideLine3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -382,8 +380,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="00시간 00분"
+        android:hint="0시간 0분"
         android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView18"
         app:layout_constraintStart_toStartOf="@+id/textView18"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -405,7 +404,7 @@
         android:layout_marginTop="10dp"
         android:text="쿠폰함"
         android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/exitButton"
         app:layout_constraintStart_toEndOf="@+id/verticalGuideline2"
         app:layout_constraintTop_toBottomOf="@id/horizontalGuideLine3" />
 
@@ -415,7 +414,7 @@
         android:layout_height="50dp"
         android:src="@drawable/baseline_coffee_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/gameImageView"
+        app:layout_constraintEnd_toStartOf="@+id/exitButton"
         app:layout_constraintStart_toEndOf="@+id/verticalGuideline2"
         app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine3" />
 
@@ -433,9 +432,9 @@
         android:id="@+id/coffeeCountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:text="0"
         android:textSize="30sp"
-        android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/coffeeImageView"
         app:layout_constraintStart_toEndOf="@+id/coffeeImageView"
         app:layout_constraintTop_toTopOf="@+id/coffeeImageView" />
@@ -449,45 +448,15 @@
         app:layout_constraintStart_toEndOf="@+id/coffeeCountTextView"
         app:layout_constraintTop_toTopOf="@+id/coffeeImageView" />
 
-    <ImageView
-        android:id="@+id/gameImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/baseline_golf_course_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalGuideLine3" />
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="게임 교환권"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="@+id/gameImageView"
-        app:layout_constraintStart_toStartOf="@+id/gameImageView"
-        app:layout_constraintTop_toBottomOf="@+id/gameImageView" />
-
     <TextView
         android:id="@+id/gameCountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
         android:textSize="30sp"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/gameImageView"
-        app:layout_constraintStart_toEndOf="@+id/gameImageView"
-        app:layout_constraintTop_toTopOf="@+id/gameImageView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" 개"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/gameImageView"
-        app:layout_constraintStart_toEndOf="@+id/gameCountTextView"
-        app:layout_constraintTop_toTopOf="@+id/gameImageView" />
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -503,8 +472,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:textSize="25sp"
+        android:padding="20dp"
         android:text="나가기"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -515,7 +485,14 @@
         android:layout_marginBottom="20dp"
         android:text="쿠폰을 사용하시려면 직원에게 말씀해주세요."
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/exitButton"
         app:layout_constraintStart_toEndOf="@+id/verticalGuideline2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

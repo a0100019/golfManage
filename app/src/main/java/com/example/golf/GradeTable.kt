@@ -1,6 +1,7 @@
 package com.example.golf
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ class GradeTable : Fragment() {
 
         val totalAttendance = arguments?.getInt("totalAttendance") ?: 0
         gradeInsert(totalAttendance)
+        Log.d("aaaa등급표값", totalAttendance.toString())
 
         //이전 등급들
         for (i in 1 until gradeNumber) {
@@ -58,7 +60,7 @@ class GradeTable : Fragment() {
                     val textViewIds = resources.getIdentifier(textViewName, "id", requireContext().packageName)
                     val textViews = view.findViewById<ImageView>(textViewIds)
                     textViews.setImageResource(R.drawable.baseline_question_mark_24)
-                    textView.isVisible = true
+                    textViews.isVisible = true
                 }
                 2 -> {
                     var textViewName = "b$gradeNumber"

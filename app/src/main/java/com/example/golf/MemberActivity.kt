@@ -5,18 +5,21 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.golf.databinding.ActivityMemberBinding
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.lang.Math.min
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -24,6 +27,8 @@ import java.time.format.DateTimeFormatter
 @Suppress("DEPRECATION")
 class MemberActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMemberBinding
+    private val COUNTDOWN_TIME = 150000 // 5분(300초)
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +40,35 @@ class MemberActivity : AppCompatActivity() {
         binding.numberTextView.text = number.toString()
         val totalAttendance = receivedIntent.getIntExtra("totalAttendance", 0)
 
+        // 타이머 생성
+        countDownTimer = object : CountDownTimer(COUNTDOWN_TIME.toLong(), 1000) {
+            @SuppressLint("SetTextI18n")
+            override fun onTick(millisUntilFinished: Long) {
+                // 타이머가 틱마다 호출되는 함수
+                val secondsRemaining = millisUntilFinished / 1000
+                binding.exitButton.text = "나가기(${secondsRemaining})"
+            }
+
+            override fun onFinish() {
+                // 타이머가 끝나면 호출되는 함수
+                // 다른 화면으로 전환
+                startActivity(Intent(this@MemberActivity, MainActivity::class.java))
+                finish() // MainActivity 종료 (선택사항)
+            }
+        }
+        countDownTimer.start()
+
+        val totalRankArrayList = intent.getStringArrayListExtra("totalRankArrayList")
+        val monthRankArrayList = intent.getStringArrayListExtra("monthRankArrayList")
+
         //fragment
-        val fragment = MonthRank()
+        val fragment = MonthRank().apply {
+            arguments = Bundle().apply {
+                // 전달할 값 설정
+
+                putStringArrayList("monthRankArrayList", monthRankArrayList)
+            }
+        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
@@ -45,12 +77,24 @@ class MemberActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.totalRank -> {
-                    val totalRank = TotalRank()
+                    val totalRank = TotalRank().apply {
+                        arguments = Bundle().apply {
+                            // 전달할 값 설정
+
+                            putStringArrayList("totalRankArrayList", totalRankArrayList)
+                        }
+                    }
                     switchFragment(totalRank)
                     true
                 }
                 R.id.monthRank -> {
-                    val monthRank = MonthRank()
+                    val monthRank = MonthRank().apply {
+                        arguments = Bundle().apply {
+                            // 전달할 값 설정
+
+                            putStringArrayList("monthRankArrayList", monthRankArrayList)
+                        }
+                    }
                     switchFragment(monthRank)
                     true
                 }
@@ -58,6 +102,7 @@ class MemberActivity : AppCompatActivity() {
                     val gradeTable = GradeTable().apply {
                         arguments = Bundle().apply {
                             // 전달할 값 설정
+
                             putInt("totalAttendance", totalAttendance)
                         }
                     }
@@ -92,12 +137,19 @@ class MemberActivity : AppCompatActivity() {
                     val currentGrade = documentSnapshot.getLong("grade") ?: 0
 
                     val currentName = documentSnapshot.getString("name") ?:""
-                    val coffee = documentSnapshot.getLong("coffee") ?: 0
                     val game = documentSnapshot.getLong("game") ?: 0
                     binding.nameTextView.text = currentName.toString()
-                    binding.coffeeCountTextView.text = coffee.toString()
                     binding.gameCountTextView.text = game.toString()
 
+
+                    //커피 이벤트
+                    var currentCoffee = documentSnapshot.getLong("coffee") ?: 0
+                    if((updatedTotalAttendance % 10).toInt() == 0) {
+                        binding.eventTextView.text = "커피 교환권 획득!"
+                        currentCoffee++
+                    } else {
+                        binding.eventTextView.text = " ${updatedTotalAttendance % 10}/10 "
+                    }
 
                     //등급 모양 부여
                     gradeInsert(updatedTotalAttendance)
@@ -113,99 +165,82 @@ class MemberActivity : AppCompatActivity() {
                     val updates = hashMapOf<String, Any>(
                         "monthAttendance" to updatedMonthAttendance,
                         "totalAttendance" to updatedTotalAttendance,
-                        "firstTime" to timestamp
+                        "firstTime" to timestamp,
+                        "coffee" to currentCoffee,
                     )
                     firstDocRef.update(updates)
                         .addOnSuccessListener {
                             Log.d("aaaa", "Coffee field updated successfully.")
+                            // 전체 순위 업데이트 하는 코드
+                            val totalQuery = Firebase.firestore.collection("number").orderBy("totalAttendance", Query.Direction.DESCENDING)
+
+                            totalQuery.get()
+                                .addOnSuccessListener { querySnapshot ->
+                                    var totalRank = 1
+                                    for (document in querySnapshot.documents) {
+                                        val documentRef = Firebase.firestore.collection("number").document(document.id)
+                                        val updates = hashMapOf<String, Any>("totalRank" to totalRank)
+
+                                        documentRef.update(updates)
+                                            .addOnSuccessListener {
+                                                // 성공적으로 rank 필드를 업데이트한 경우
+                                                Log.d("aaaa", "Document ${document.id} rank updated successfully.")
+                                            }
+
+                                        totalRank++
+                                    }
+                                }
+
+                            //월 순위 업데이트 하는 코드
+                            val monthQuery = Firebase.firestore.collection("number")
+                                .orderBy("monthAttendance", Query.Direction.DESCENDING).orderBy("totalAttendance", Query.Direction.DESCENDING)
+                            val rank10MonthAttendance = 0
+                            monthQuery.get()
+                                .addOnSuccessListener { querySnapshot ->
+                                    var monthRank = 1
+                                    for (document in querySnapshot.documents) {
+                                        val documentRef = Firebase.firestore.collection("number").document(document.id)
+                                        val updates = hashMapOf<String, Any>("monthRank" to monthRank)
+
+                                        documentRef.update(updates)
+                                            .addOnSuccessListener {
+                                                // 성공적으로 rank 필드를 업데이트한 경우
+                                                Log.d("aaaa", "Document ${document.id} rank updated successfully.")
+                                            }
+
+                                        monthRank++
+                                    }
+
+                                    //순위 입력 코드
+                                    val secondDocRef = Firebase.firestore.collection("number").document(number.toString())
+                                    secondDocRef.get()
+                                        .addOnSuccessListener { documentSnapshot ->
+                                            if (documentSnapshot.exists()) {
+                                                val monthRank = documentSnapshot.getLong("monthRank") ?: 0
+                                                val totalRank = documentSnapshot.getLong("totalRank") ?: 0
+                                                binding.monthRankingTextView.text = monthRank.toString()
+                                                binding.totalRankingTextView.text = totalRank.toString()
+                                            } else {
+                                                Log.d("aaaa", "Document does not exist.")
+                                            }
+                                        }
+                                }
                         }
                         .addOnFailureListener { exception ->
                             Log.w("aaaa", "Error updating coffee field", exception)
                         }
-
+                    binding.coffeeCountTextView.text = currentCoffee.toString()
                     binding.monthAttendanceTextView.text = updatedMonthAttendance.toString()
                     binding.totalAttendanceTextView.text = updatedTotalAttendance.toString()
                 } else {
                     Log.d("aaaa", "Document does not exist.")
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("aaaa", "Error getting document", exception)
-            }
 
-        // 전체 순위 업데이트 하는 코드
-        val totalQuery = Firebase.firestore.collection("number").orderBy("totalAttendance", Query.Direction.DESCENDING)
 
-        totalQuery.get()
-            .addOnSuccessListener { querySnapshot ->
-                var totalRank = 1
-                for (document in querySnapshot.documents) {
-                    val documentRef = Firebase.firestore.collection("number").document(document.id)
-                    val updates = hashMapOf<String, Any>("totalRank" to totalRank)
 
-                    documentRef.update(updates)
-                        .addOnSuccessListener {
-                            // 성공적으로 rank 필드를 업데이트한 경우
-                            Log.d("aaaa", "Document ${document.id} rank updated successfully.")
-                        }
-                        .addOnFailureListener { exception ->
-                            // rank 필드 업데이트 실패한 경우
-                            Log.w("aaaa", "Error updating rank for document ${document.id}", exception)
-                        }
 
-                    totalRank++
-                }
-            }
-            .addOnFailureListener { exception ->
-                // 문서 가져오기 실패한 경우
-                Log.w("aaaa", "Error getting documents", exception)
             }
 
-//월 순위 업데이트 하는 코드
-        val monthQuery = Firebase.firestore.collection("number").orderBy("monthAttendance", Query.Direction.DESCENDING)
-
-        monthQuery.get()
-            .addOnSuccessListener { querySnapshot ->
-                var monthRank = 1
-                for (document in querySnapshot.documents) {
-                    val documentRef = Firebase.firestore.collection("number").document(document.id)
-                    val updates = hashMapOf<String, Any>("monthRank" to monthRank)
-
-                    documentRef.update(updates)
-                        .addOnSuccessListener {
-                            // 성공적으로 rank 필드를 업데이트한 경우
-                            Log.d("aaaa", "Document ${document.id} rank updated successfully.")
-                        }
-                        .addOnFailureListener { exception ->
-                            // rank 필드 업데이트 실패한 경우
-                            Log.w("aaaa", "Error updating rank for document ${document.id}", exception)
-                        }
-
-                    monthRank++
-                }
-            }
-            .addOnFailureListener { exception ->
-                // 문서 가져오기 실패한 경우
-                Log.w("aaaa", "Error getting documents", exception)
-            }
-
-
-        //순위 입력 코드
-        val secondDocRef = Firebase.firestore.collection("number").document(number.toString())
-        secondDocRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    val monthRank = documentSnapshot.getLong("monthRank") ?: 0
-                    val totalRank = documentSnapshot.getLong("totalRank") ?: 0
-                    binding.monthRankingTextView.text = monthRank.toString()
-                    binding.totalRankingTextView.text = totalRank.toString()
-                } else {
-                    Log.d("aaaa", "Document does not exist.")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("aaaa", "Error getting document", exception)
-            }
 
 
         binding.exitButton.setOnClickListener {
@@ -225,19 +260,95 @@ class MemberActivity : AppCompatActivity() {
                 setNegativeButton("아니오") { _, _ ->
                 }
                 setPositiveButton("네") { _, _ ->
-                    val updateName = hashMapOf<String, Any>(
-                        "name" to editText.text.toString(),
-                    )
-                    firstDocRef.update(updateName)
-                        .addOnSuccessListener {
-                            Log.d("aaaa", "닉네임 변경 성공.")
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.w("aaaa", "닉네임 변경 실패", exception)
-                        }
-                    binding.nameTextView.text = editText.text.toString()
-                }
-            }.show()
+                    val newName = editText.text.toString().take(10)
+
+                    if (newName.isBlank()) {
+                        // 사용자가 아무것도 입력하지 않았을 때의 처리
+                        Toast.makeText(this@MemberActivity, "닉네임을 입력해주세요.", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        val updateName = hashMapOf<String, Any>(
+                            "name" to newName
+                        )
+                        firstDocRef.update(updateName)
+                            .addOnSuccessListener {
+                                Log.d("aaaa", "닉네임 변경 성공.")
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.w("aaaa", "닉네임 변경 실패", exception)
+                            }
+                        binding.nameTextView.text = editText.text.toString()
+                    }
+                }.show()
+            }
+        }
+
+        var clickCount = 0
+        binding.gradeImageView.setOnClickListener {
+            clickCount++
+            if (clickCount > 4 ) {
+                AlertDialog.Builder(this).apply {
+                    setTitle("교환권 사용하기")
+                    setMessage("사용하실 교환권을 선택해주세요. 신중하게 클릭해주세요.")
+
+                    setNegativeButton("커피 교환권 사용") { _, _ ->
+                        firstDocRef.get()
+                            .addOnSuccessListener { documentSnapshot ->
+                                if (documentSnapshot.exists()) {
+                                    val coffee = documentSnapshot.getLong("coffee") ?: 0
+                                    val updateCoffee = coffee -1
+                                    val updateName = hashMapOf<String, Any>(
+                                        "coffee" to updateCoffee,
+                                    )
+                                    firstDocRef.update(updateName)
+                                        .addOnSuccessListener {
+                                            Log.d("aaaa", "커피 교환권 사용 성공.")
+                                            binding.coffeeCountTextView.text = updateCoffee.toString()
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Log.w("aaaa", "커피 교환권 사용 실패", exception)
+                                        }
+
+                                } else {
+                                    Log.d("aaaa", "Document does not exist.")
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.w("aaaa", "Error getting document", exception)
+                            }
+                    }
+
+                    setPositiveButton("게임 교환권 사용") { _, _ ->
+                        firstDocRef.get()
+                            .addOnSuccessListener { documentSnapshot ->
+                                if (documentSnapshot.exists()) {
+                                    val game = documentSnapshot.getLong("game") ?: 0
+                                    val updateGame = game -1
+                                    val updateName = hashMapOf<String, Any>(
+                                        "game" to updateGame,
+                                    )
+                                    firstDocRef.update(updateName)
+                                        .addOnSuccessListener {
+                                            Log.d("aaaa", "게임 교환권 사용 성공.")
+                                            binding.gameCountTextView.text = updateGame.toString()
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Log.w("aaaa", "게임 교환권 사용 실패", exception)
+                                        }
+
+                                } else {
+                                    Log.d("aaaa", "Document does not exist.")
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.w("aaaa", "Error getting document", exception)
+                            }
+
+                    }
+
+
+                }.show()
+            }
         }
 
         //현재 시각
@@ -260,6 +371,12 @@ class MemberActivity : AppCompatActivity() {
 
     }
 //여기까지 oncreate
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // 액티비티가 종료될 때 타이머 취소
+        countDownTimer.cancel()
+    }
 
     private fun switchFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
