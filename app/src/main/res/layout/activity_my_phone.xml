@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingConstraints"
+    tools:context=".MyPhoneActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="0명"
+        android:id="@+id/size"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView21"
+        app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="변경을 눌러 새로 고침 해주세요"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/keyPadFlow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="30dp"
+        android:padding="8dp"
+        app:constraint_referenced_ids="rank, rankName, rankAttendance, rankImage,rank1, rank1Name, rank1Attendance, rank1Image, rank2, rank2Name, rank2Attendance, rank2Image, rank3, rank3Name, rank3Attendance, rank3Image, rank4, rank4Name, rank4Attendance, rank4Image, rank5, rank5Name, rank5Attendance, rank5Image, rank6, rank6Name, rank6Attendance, rank6Image, rank7, rank7Name, rank7Attendance, rank7Image, rank8, rank8Name, rank8Attendance, rank8Image, rank9, rank9Name, rank9Attendance, rank9Image,rank10, rank10Name, rank10Attendance, rank10Image "
+        app:flow_maxElementsWrap="4"
+        app:flow_wrapMode="chain"
+        app:layout_constraintBottom_toTopOf="@+id/previousButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="순위"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rankName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="닉네임"
+        android:textSize="15sp"
+         />
+
+    <TextView
+        android:id="@+id/rankAttendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="월 출석"
+        android:layout_marginEnd="20dp"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rankImage"
+        tools:layout_editor_absoluteY="137dp" />
+
+    <TextView
+        android:id="@+id/rankImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="등급"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow"
+        tools:layout_editor_absoluteY="137dp" />
+
+    <TextView
+        android:id="@+id/rank1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank1Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank1Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank1Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank2Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank2Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank2Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank3Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank3Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank3Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank4Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank4Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank4Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank5Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank5Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank5Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank6Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank6Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank6Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank7Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank7Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank7Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank8Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank8Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank8Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="9"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank9Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank9Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank9Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@+id/keyPadFlow" />
+
+    <TextView
+        android:id="@+id/rank10Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/rank10Attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1회"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/rank1Image"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageView
+        android:id="@+id/rank10Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/keyPadFlow" />
+
+    <Button
+        android:id="@+id/previousButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이전"
+        android:layout_marginBottom="5dp"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:id="@+id/changeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="변경"
+        android:layout_marginBottom="5dp"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/nextButton"
+        app:layout_constraintStart_toEndOf="@+id/previousButton" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이후"
+        android:layout_marginBottom="5dp"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

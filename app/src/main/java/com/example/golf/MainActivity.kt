@@ -36,6 +36,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+//        관리자계정
+//        val intent = Intent(this, MyPhoneActivity::class.java)
+//        startActivity(intent)
+//        finish()
+
         //월 순위 만들기
         Firebase.firestore.collection("number")
             .orderBy("monthRank")
@@ -148,6 +153,17 @@ class MainActivity : AppCompatActivity() {
 
         //확인 버튼 비활성화
         binding.buttonEnter.isEnabled = false
+
+        //MyPhoneActivity로 넘어가는 코드
+        var timeViewClick = 0
+        binding.timeView.setOnClickListener {
+            timeViewClick++
+            if (timeViewClick == 3) {
+                val intent = Intent(this, MyPhoneActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
 
     }
 //여기까지 oncreate
